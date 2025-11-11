@@ -1,13 +1,84 @@
-# coc-project-cab-fare-calculator
-A simple C program that calculates cab fare based on distance and cab type.
 
-This project is a Cab Fare Calculator made using the C programming language.
-It helps to calculate the total cab fare based on the distance travelled and the type of cab (Mini, Sedan, or SUV).
-It also adds a base fare and includes GST, so that the total cost looks more like a real-life cab bill.
+#include <stdio.h>
 
-C Concepts: Loops, Conditions, Switch Case, Functions, Variables, Basic Calculations
+// simple cab fare calculator
 
-Math Concepts: Multiplication, Percentage (for GST), Simple Formula Application
+void menu();
+void showRates();
+float calcFare(float dist, int type);
 
-How to Compile
-gcc main.c -o cab_fare_calculator -lm
+int main() {
+    int choice, cabType;
+    float dist, fare;
+
+    printf("\n=== CAB FARE CALCULATOR ===\n");
+
+    do {
+        menu();
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                showRates();
+                break;
+
+            case 2:
+                printf("\nEnter distance in km: ");
+                scanf("%f", &dist);
+                printf("Select cab type:\n1. Mini\n2. Sedan\n3. SUV\nEnter: ");
+                scanf("%d", &cabType);
+
+                fare = calcFare(dist, cabType);
+                if(fare != -1)
+                    printf("\nTotal Fare = ₹%.2f\n", fare);
+                break;
+
+            case 3:
+                printf("\nThanks for using Cab Fare Calculator!\n");
+                break;
+
+            default:
+                printf("\nWrong choice! Try again.\n");
+        }
+
+    } while(choice != 3);
+
+    return 0;
+}
+
+void menu() {
+    printf("\n========================\n");
+    printf("1. Show Cab Rates\n");
+    printf("2. Calculate Fare\n");
+    printf("3. Exit\n");
+    printf("========================\n");
+}
+
+void showRates() {
+    printf("\n--- CAB RATES ---\n");
+    printf("Mini  = ₹10 per km\n");
+    printf("Sedan = ₹15 per km\n");
+    printf("SUV   = ₹20 per km\n");
+    printf("Base Fare = ₹50\n");
+    printf("GST = 5%% extra\n");
+}
+
+float calcFare(float dist, int type) {
+    float rate, total;
+
+    if(type == 1)
+        rate = 10;
+    else if(type == 2)
+        rate = 15;
+    else if(type == 3)
+        rate = 20;
+    else {
+        printf("\nInvalid cab type!\n");
+        return -1;
+    }
+
+    total = (rate * dist) + 50; // base fare
+    total = total + (total * 0.05); // 5% gst
+    return total;
+}
